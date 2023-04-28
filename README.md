@@ -1,2 +1,2 @@
 # React-Demo
-基于React+antd+redux+koa2+progreSQL
+基于React+antd+redux+koa2+progreSQL的demo
