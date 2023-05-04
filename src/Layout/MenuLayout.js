@@ -1,9 +1,9 @@
 import { PieChartOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { useNavigate, Outlet  } from "react-router-dom";
-
+import { useNavigate, Outlet } from "react-router-dom";
+import store from '../redux/store'
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -32,10 +32,12 @@ const App = (props) => {
   } = theme.useToken();
   const navigate = useNavigate();
   const location = useLocation();
+  const { userInfo } = store.getState()
 
   const goRoute = (e) => {
     navigate(e.key);
   };
+
   //获取当前页面路由
   const str = location.pathname.replace("/", "");
   const currentRoute =
@@ -44,6 +46,13 @@ const App = (props) => {
   //当前高亮菜单项
   const defaultSelectedKeys =
     location.pathname === "/my" ? "/my/dashboard" : location.pathname;
+  console.log(userInfo,'-------------------');
+  useEffect(() => {
+    console.log(userInfo,'xxxxxxxxxxx');
+    // if (!userInfo||!Object.keys(userInfo)?.length) {
+    //   navigate('/login')
+    // }
+  }, [userInfo])
   return (
     <Layout
       style={{
@@ -81,10 +90,14 @@ const App = (props) => {
       <Layout className="site-layout">
         <Header
           style={{
-            padding: 0,
+            padding: '0 16px',
             background: colorBgContainer,
+            fontWeight:'bold',
+            fontSize:20
           }}
-        />
+        >
+          {'Hi! '+userInfo.user_name+' 你好！'}
+          </Header>
         <Content
           style={{
             margin: "0 16px",

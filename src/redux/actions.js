@@ -6,13 +6,13 @@ import axios from 'axios'
 function changeUserInfo(data) {
   return {
     type: CHANGE_USER_INFO,
-    data: data
+    data
   };
 }
 //登录注册异步操作
 function registerLogin(data){
   return (dispatch)=>{
-    axios.post("/registerLogin",data.userInfo).then(
+    axios.post("/registerLogin",data).then(
       (res) => {
         dispatch(changeUserInfo(res?.data?.data))
       }

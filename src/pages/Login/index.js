@@ -1,13 +1,14 @@
 // import {useNavigate } from 'react-router-dom'
 import { Button, Form, Input } from "antd";
 import { useSelector,useDispatch } from "react-redux";
-import { registerLogin } from "../../redux/actions";
 import axios from 'axios'
+import { useNavigate  } from "react-router-dom";
+
 axios.defaults.baseURL = "http://localhost:8090";
 
-const Login = () => {
+const Login = (props) => {
   // const [messageApi, contextHolder] = message.useMessage();
-  // const navigate=useNavigate()
+   const navigate=useNavigate()
   // const messageOpen=(type,message)=>{
   //   messageApi.open({
   //     type: type,
@@ -31,7 +32,8 @@ const Login = () => {
   };
 
   const onFinish = (values) => {
-    dispatch(registerLogin(values))
+    props.registerLogin(values)
+    navigate('/my/dashboard')
   };
   const onFinishFailed = (errorInfo) => {
   };

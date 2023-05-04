@@ -1,6 +1,6 @@
 import Dashboard from "../pages/Dashboard/index";
 import User from "../pages/User/index";
-import Login from "../pages/Login/index";
+import LoginContainer from "../container/LoginContainer";
 import { Navigate, useRoutes } from "react-router-dom";
 import MenuLayout from "../Layout/MenuLayout";
 import ExtraLayout from '../Layout/ExtraLayout'
@@ -37,7 +37,7 @@ const ExtraRoutes = () => {
       children: [
         {
             path: "/login",
-            element: <Login />,
+            element: <LoginContainer />,
           },
       ],
     },

@@ -11,7 +11,7 @@ export default function reducer(
     case CHANGE_USER_INFO:
       return {
         ...state,
-        userInfo: action.userInfo,
+        userInfo: action.data,
       };
     default:
       return state;
