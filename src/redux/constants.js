@@ -1,9 +1,5 @@
 // 定义常量,方便后期统一维护管理
 
-// 增加
-export const INCREMENT = "INCREMENT";
+// 登录注册接口
+export const CHANGE_USER_INFO = "CHANGE_USER_INFO";
 
-// 减少
-export const DECREMENT = "DECREMENT";
-
-export const COUNTTIME='COUNTTIME'

@@ -22,7 +22,7 @@ const client = new Client({
 //连接数据库
 client.connect();
 
-//注册使用中间件
+//注册使用cors中间件解决跨域
 app.use(
   cors({
     origin: function (ctx) {
@@ -102,6 +102,40 @@ router.post("/deleteUser", async (ctx) => {
     message: "删除成功",
   };
 });
+//注册/登录
+router.post("/registerLogin", async (ctx) => {
+  const params = ctx.request.body;
+  let message = "注册成功";
+  let status = "register";
+  let data = {};
+  const res = await client.query(
+    "select * from users where user_name=$1 and password=$2",
+    [params.userName, params.password]
+  );
+  if (res.rows?.length) {
+    message = "登录成功";
+    status = "login";
+    data = res.rows[0];
+  } else {
+    await client.query("insert into users (user_name,password) values($1,$2)", [
+      params.userName,
+      params.password,
+    ]);
+    const registerRes = await client.query(
+      "select * from users where user_name=$1 and password=$2",
+      [params.userName, params.password]
+    );
+    if (registerRes.rows?.length) {
+      data = registerRes.rows[0];
+    }
+  }
+  ctx.body = {
+    status,
+    data,
+    message,
+  };
+});
+
 //监听服务器
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

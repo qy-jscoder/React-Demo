@@ -1,31 +1,18 @@
 // 导入常量
-import { INCREMENT, DECREMENT,COUNTTIME } from "../redux/constants";
+import { CHANGE_USER_INFO } from "../redux/constants";
 
 export default function reducer(
   state = {
-    count: 0,
-    msg: "我爱你中国",
-    arr: [1, 2, 3, 4],
+    userInfo:{}
   },
   action
 ) {
   switch (action.type) {
-    // case "ADD":
-    case INCREMENT:
+    case CHANGE_USER_INFO:
       return {
         ...state,
-        count: state.count + action.data,
+        userInfo: action.userInfo,
       };
-    case DECREMENT:
-      return {
-        ...state,
-        count: state.count - action.data,
-      };
-    case COUNTTIME:
-      return {
-        ...state,
-        
-      }
     default:
       return state;
   }

@@ -1,6 +1,3 @@
-# React-Demo
-基于React+antd+redux+koa2+progreSQL的demo
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
