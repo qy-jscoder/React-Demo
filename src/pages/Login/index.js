@@ -1,4 +1,5 @@
 import { Button, Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { registerLogin } from "../../redux/modules/login";
 import axios from "axios";
@@ -25,79 +26,70 @@ const Login = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     maxWidth: 400,
-    maxHeight:300,
-    width:'50vw',
-    height:'50vh',
-    display:'flex',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    alignItems:'center',
-    justifyContent: "space-around"
+    maxHeight: 300,
+    width: "50vw",
+    height: "50vh",
+    display: "flex",
+    flexDirection:'column',
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   const onFinish = (values) => {
     dispatch(registerLogin(values));
   };
   useEffect(() => {
-    if (Object.keys(userInfo)?.length) {
-      console.log(userInfo,'xxxxxxx');
+    if (userInfo&&Object.keys(userInfo)?.length) {
       navigate("/my/dashboard");
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [userInfo]);
 
   return (
     <div style={bgStyle}>
       <div style={formStyle}>
-        {/* {contextHolder} */}
+        <h2>注册/登录</h2>
         <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={{
-            remember: true,
-          }}
+          name="normal_login"
+          style={{maxWidth:300}}
           onFinish={onFinish}
-          autoComplete="off"
         >
           <Form.Item
-            label="Username"
             name="userName"
             rules={[
               {
                 required: true,
-                message: "Please input your userName!",
+                message: "Please input your Username!",
               },
             ]}
           >
-            <Input />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
           </Form.Item>
-
           <Form.Item
-            label="Password"
             name="password"
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: "Please input your Password!",
               },
             ]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              注册/登录
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{width:'100%'}}
+            >
+              确认
             </Button>
           </Form.Item>
         </Form>

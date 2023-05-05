@@ -48,42 +48,17 @@ app.use(router.routes(), router.allowedMethods());
 //修改用户
 router.post("/alterUser", async (ctx) => {
   const params = ctx.request.body;
-  const res = await client.query("update users set role=$1 where id=$2", [
+  await client.query("update users set role=$1 where id=$2", [
     params.role,
     params.id,
   ]);
-  let message = "修改失败";
-  let status = "fail";
-  if (res.rowCount) {
-    status = "success";
-    message = "修改成功";
-  }
   ctx.body = {
-    status: status,
+    status: "success",
     data: null,
-    message: message,
+    message: "修改成功",
   };
 });
-//添加用户
-router.post("/addUser", async (ctx) => {
-  const params = ctx.request.body;
-  const res = await client.query(
-    "insert into users (user_name,password) values($1,$2)",
-    [params.userName, params.password]
-  );
-  let message = "添加失败";
-  let status = "fail";
-  let data = null;
-  if (res.rowCount) {
-    status = "success";
-    message = "添加成功";
-  }
-  ctx.body = {
-    status: status,
-    data: data,
-    message: message,
-  };
-});
+
 //获取全部用户数据
 router.get("/getAllUsers", async (ctx) => {
   const res = await client.query("select * from users");

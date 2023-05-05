@@ -39,7 +39,7 @@ function User() {
     axios.get("/getAllUsers").then(
       (response) => {
         const arr = Array.isArray(response?.data?.data)
-          ? response?.data?.data?.reverse()
+          ? response?.data?.data
           : [];
         setTableData(arr);
       },
