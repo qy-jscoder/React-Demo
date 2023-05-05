@@ -4,7 +4,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Dialog from "../../components/Dialog/index";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const { Column } = Table;
 axios.defaults.baseURL = "http://localhost:8090";
@@ -39,7 +39,9 @@ function User() {
     axios.get("/getAllUsers").then(
       (response) => {
         const arr = Array.isArray(response?.data?.data)
-          ? response?.data?.data
+          ? response?.data?.data.sort((a, b) => {
+              return b.id - a.id;
+            })
           : [];
         setTableData(arr);
       },
@@ -124,7 +126,7 @@ function User() {
           render={(tags, row) => (
             <Space>
               <Button
-                disabled={row.user_name === "admin"}
+                disabled={row.user_name === "admin" || !userInfo.role}
                 type="primary"
                 onClick={() => {
                   setModalVisible(true);
@@ -138,14 +140,18 @@ function User() {
                 角色
               </Button>
               <Button
-                disabled={row.user_name === "admin"||row.user_name===userInfo.user_name}
+                disabled={
+                  row.user_name === "admin" ||
+                  row.user_name === userInfo.user_name ||
+                  !userInfo.role
+                }
                 type="primary"
                 danger
                 onClick={() => {
                   setModalVisible(true);
                   setDialogInfo({
                     key: "delete",
-                    text: "确认要删除用户"+row.user_name+"吗？",
+                    text: "确认要删除用户" + row.user_name + "吗？",
                     row,
                   });
                 }}
@@ -157,7 +163,11 @@ function User() {
         />
       </Table>
       <Dialog
-        title={dialogInfo.key === "role" ? "用户"+dialogInfo?.row?.user_name+'的角色' : "删除"}
+        title={
+          dialogInfo.key === "role"
+            ? "用户" + dialogInfo?.row?.user_name + "的角色"
+            : "删除"
+        }
         visible={isModalOpen}
         callback={dialogCallback}
         icon={dialogInfo.icon}
