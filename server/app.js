@@ -42,6 +42,7 @@ app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
   await next();
 });
+
 app.use(router.routes(), router.allowedMethods());
 
 //修改用户

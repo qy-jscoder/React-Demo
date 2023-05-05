@@ -1,9 +1,10 @@
 import { PieChartOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu, theme, Button } from "antd";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate, Outlet } from "react-router-dom";
-import store from '../redux/store'
+import { changeUserInfo } from "../redux/modules/login";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -25,34 +26,37 @@ const items = [
   getItem("User", "/my/user", <UserOutlined />),
 ];
 
-const App = (props) => {
+const App = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
   const location = useLocation();
-  const { userInfo } = store.getState()
-
-  const goRoute = (e) => {
-    navigate(e.key);
-  };
-
+  const { userInfo } = useSelector((state) => state.login);
+  const dispatch = useDispatch();
   //获取当前页面路由
   const str = location.pathname.replace("/", "");
   const currentRoute =
     str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
+  //获取当前面包屑
   const breadItems = [getBreadItem(currentRoute)];
   //当前高亮菜单项
   const defaultSelectedKeys =
     location.pathname === "/my" ? "/my/dashboard" : location.pathname;
-  console.log(userInfo,'-------------------');
+  //点击导航路由跳转
+  const goRoute = (e) => {
+    navigate(e.key);
+  };
+  //退出登录
+  const logout = () => {
+    dispatch(changeUserInfo({}));
+  };
   useEffect(() => {
-    console.log(userInfo,'xxxxxxxxxxx');
-    // if (!userInfo||!Object.keys(userInfo)?.length) {
-    //   navigate('/login')
-    // }
-  }, [userInfo])
+    if (!userInfo || !Object.keys(userInfo)?.length) {
+      navigate("/login");
+    }// eslint-disable-next-line
+  }, [userInfo]);
   return (
     <Layout
       style={{
@@ -90,14 +94,20 @@ const App = (props) => {
       <Layout className="site-layout">
         <Header
           style={{
-            padding: '0 16px',
+            padding: "0 16px",
             background: colorBgContainer,
-            fontWeight:'bold',
-            fontSize:20
+            fontWeight: "bold",
+            fontSize: 20,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {'Hi! '+userInfo.user_name+' 你好！'}
-          </Header>
+          <span>{`Hi! ${userInfo.role?'管理员':'游客'}${userInfo.user_name} 你好！`}</span>
+          <Button type="primary" onClick={logout}>
+            退出登录
+          </Button>
+        </Header>
         <Content
           style={{
             margin: "0 16px",

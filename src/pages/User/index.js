@@ -4,6 +4,8 @@ import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Dialog from "../../components/Dialog/index";
+import {  useSelector } from "react-redux";
+
 const { Column } = Table;
 axios.defaults.baseURL = "http://localhost:8090";
 
@@ -18,6 +20,7 @@ function User() {
   });
   const [role, setRole] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const { userInfo } = useSelector((state) => state.login);
 
   const success = (text = "接口请求成功") => {
     messageApi.open({
@@ -135,14 +138,14 @@ function User() {
                 角色
               </Button>
               <Button
-                disabled={row.user_name === "admin"}
+                disabled={row.user_name === "admin"||row.user_name===userInfo.user_name}
                 type="primary"
                 danger
                 onClick={() => {
                   setModalVisible(true);
                   setDialogInfo({
                     key: "delete",
-                    text: "确认要删除该账号吗？",
+                    text: "确认要删除用户"+row.user_name+"吗？",
                     row,
                   });
                 }}
@@ -154,7 +157,7 @@ function User() {
         />
       </Table>
       <Dialog
-        title={dialogInfo.key === "role" ? "角色" : "删除"}
+        title={dialogInfo.key === "role" ? "用户"+dialogInfo?.row?.user_name+'的角色' : "删除"}
         visible={isModalOpen}
         callback={dialogCallback}
         icon={dialogInfo.icon}

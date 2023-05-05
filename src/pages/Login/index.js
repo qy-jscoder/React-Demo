@@ -1,42 +1,49 @@
-// import {useNavigate } from 'react-router-dom'
 import { Button, Form, Input } from "antd";
-import { useSelector,useDispatch } from "react-redux";
-import axios from 'axios'
-import { useNavigate  } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { registerLogin } from "../../redux/modules/login";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+// import bg from '../../assets/img/1.jpg'
 axios.defaults.baseURL = "http://localhost:8090";
 
-const Login = (props) => {
-  // const [messageApi, contextHolder] = message.useMessage();
-   const navigate=useNavigate()
-  // const messageOpen=(type,message)=>{
-  //   messageApi.open({
-  //     type: type,
-  //     content: message,
-  //   });
-  // }
-  const userInfo=useSelector(state=>state.userInfo)
-  const dispatch=useDispatch()
+const Login = () => {
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.login);
+
+  const dispatch = useDispatch();
   const bgStyle = {
     width: "100vw",
     height: "100vh",
     overflow: "hidden",
     position: "relative",
-    backgroundImage: require("./1.jpg"),
+    // backgroundImage: `url(${bg})`,
   };
   const formStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
+    maxWidth: 400,
+    maxHeight:300,
+    width:'50vw',
+    height:'50vh',
+    display:'flex',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    alignItems:'center',
+    justifyContent: "space-around"
   };
 
   const onFinish = (values) => {
-    props.registerLogin(values)
-    navigate('/my/dashboard')
+    dispatch(registerLogin(values));
   };
-  const onFinishFailed = (errorInfo) => {
-  };
+  useEffect(() => {
+    if (Object.keys(userInfo)?.length) {
+      console.log(userInfo,'xxxxxxx');
+      navigate("/my/dashboard");
+    }// eslint-disable-next-line
+  }, [userInfo]);
+
   return (
     <div style={bgStyle}>
       <div style={formStyle}>
@@ -50,13 +57,12 @@ const Login = (props) => {
             span: 16,
           }}
           style={{
-            maxWidth: 600
+            maxWidth: 600,
           }}
           initialValues={{
             remember: true,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item
@@ -100,4 +106,4 @@ const Login = (props) => {
   );
 };
 
-export default Login
+export default Login;
