@@ -21,6 +21,10 @@ function getBreadItem(title, href) {
     href,
   };
 }
+//首字母大写其余小写
+const strUpper=(str)=>{
+  return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase()
+}
 const items = [
   getItem("Dashboard", "/my/dashboard", <PieChartOutlined />),
   getItem("User", "/my/user", <UserOutlined />),
@@ -37,10 +41,9 @@ const App = () => {
   const dispatch = useDispatch();
   //获取当前页面路由
   const str = location.pathname.replace("/", "");
-  const currentRoute =
-    str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
+  const currentRoute =strUpper((strUpper(str)).replace('My/',''))
   //获取当前面包屑
-  const breadItems = [getBreadItem(currentRoute)];
+  const breadItems = [getBreadItem('My'),getBreadItem(currentRoute)];
   //当前高亮菜单项
   const defaultSelectedKeys =
     location.pathname === "/my" ? "/my/dashboard" : location.pathname;
@@ -80,6 +83,7 @@ const App = () => {
             textOverflow: "ellipsis",
             overflow: "hidden",
           }}
+          title="React Demo"
         >
           React Demo
         </div>
