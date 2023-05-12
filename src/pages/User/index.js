@@ -113,7 +113,7 @@ function User() {
       {contextHolder}
       <Table dataSource={tableData} rowKey={(record) => record.id}>
         <Column title="Id" dataIndex="id" key="id" />
-        <Column title="UserName" dataIndex="user_name" key="user_name" />
+        <Column title="UserName" dataIndex="userName" key="userName" />
         <Column title="Password" dataIndex="password" key="password" />
         <Column
           title="Role"
@@ -126,7 +126,7 @@ function User() {
           render={(tags, row) => (
             <Space>
               <Button
-                disabled={row.user_name === "admin" || !userInfo.role}
+                disabled={row.userName === "admin" || !userInfo.role}
                 type="primary"
                 onClick={() => {
                   setModalVisible(true);
@@ -141,8 +141,8 @@ function User() {
               </Button>
               <Button
                 disabled={
-                  row.user_name === "admin" ||
-                  row.user_name === userInfo.user_name ||
+                  row.userName === "admin" ||
+                  row.userName === userInfo.userName ||
                   !userInfo.role
                 }
                 type="primary"
@@ -151,7 +151,7 @@ function User() {
                   setModalVisible(true);
                   setDialogInfo({
                     key: "delete",
-                    text: "确认要删除用户" + row.user_name + "吗？",
+                    text: "确认要删除用户" + row.userName + "吗？",
                     row,
                   });
                 }}
@@ -165,7 +165,7 @@ function User() {
       <Dialog
         title={
           dialogInfo.key === "role"
-            ? "用户" + dialogInfo?.row?.user_name + "的角色"
+            ? "用户" + dialogInfo?.row?.userName + "的角色"
             : "删除"
         }
         visible={isModalOpen}

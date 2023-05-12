@@ -107,7 +107,7 @@ const App = () => {
             alignItems: "center",
           }}
         >
-          <span>{`Hi! ${userInfo.role?'管理员':'游客'}${userInfo.user_name} 你好！`}</span>
+          <span>{`Hi! ${userInfo.role?'管理员':'游客'}${userInfo.userName} 你好！`}</span>
           <Button type="primary" onClick={logout}>
             退出登录
           </Button>

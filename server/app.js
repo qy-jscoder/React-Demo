@@ -1,27 +1,14 @@
 //导入相关模块
 const Koa = require("koa2");
-const { Client } = require("pg");
-const Router = require("koa-router");
 const cors = require("koa2-cors");
 const bodyParser = require("koa-bodyparser");
-
+const router = require("./router/index.js");
+//导入数据库操作
+require("./sqlTable/index.js");
 //常量
 const port = 8090;
-
 //创建实例
 const app = new Koa();
-const router = new Router();
-const client = new Client({
-  //postgreSQL配置
-  user: "postgres",
-  host: "127.0.0.1",
-  database: "postgres",
-  password: "123456",
-  port: 5432,
-});
-//连接数据库
-client.connect();
-
 //注册使用cors中间件解决跨域
 app.use(
   cors({
@@ -42,76 +29,7 @@ app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
   await next();
 });
-
-app.use(router.routes(), router.allowedMethods());
-
-//修改用户
-router.post("/alterUser", async (ctx) => {
-  const params = ctx.request.body;
-  await client.query("update users set role=$1 where id=$2", [
-    params.role,
-    params.id,
-  ]);
-  ctx.body = {
-    status: "success",
-    data: null,
-    message: "修改成功",
-  };
-});
-
-//获取全部用户数据
-router.get("/getAllUsers", async (ctx) => {
-  const res = await client.query("select * from users");
-  ctx.body = {
-    status: "success",
-    data: res.rows,
-    message: "请求成功",
-  };
-});
-//删除用户
-router.post("/deleteUser", async (ctx) => {
-  const params = ctx.request.body;
-  await client.query("delete from users where id=$1", [params.id]);
-  ctx.body = {
-    status: "success",
-    data: null,
-    message: "删除成功",
-  };
-});
-//注册/登录
-router.post("/registerLogin", async (ctx) => {
-  const params = ctx.request.body;
-  let message = "注册成功";
-  let status = "register";
-  let data = {};
-  const res = await client.query(
-    "select * from users where user_name=$1 and password=$2",
-    [params.userName, params.password]
-  );
-  if (res.rows?.length) {
-    message = "登录成功";
-    status = "login";
-    data = res.rows[0];
-  } else {
-    await client.query("insert into users (user_name,password) values($1,$2)", [
-      params.userName,
-      params.password,
-    ]);
-    const registerRes = await client.query(
-      "select * from users where user_name=$1 and password=$2",
-      [params.userName, params.password]
-    );
-    if (registerRes.rows?.length) {
-      data = registerRes.rows[0];
-    }
-  }
-  ctx.body = {
-    status,
-    data,
-    message,
-  };
-});
-
+app.use(router());
 //监听服务器
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
