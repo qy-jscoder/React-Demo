@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-validator": "^4.2.5",
     "cors": "^2.8.5",
     "koa-bodyparser": "^4.4.0",
     "koa-compose": "^4.1.0",

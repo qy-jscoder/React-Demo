@@ -8,7 +8,7 @@ export const registerLogin = createAsyncThunk(
   async (params) => {
     try {
       const res = await axios.post("/registerLogin", params);
-      return res?.data?.data || {};
+      return res?.data?.data;
     } catch (error) {
       return error.message;
     }

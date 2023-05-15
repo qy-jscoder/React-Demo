@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { registerLogin } from "../../redux/modules/login";
@@ -10,6 +10,7 @@ axios.defaults.baseURL = "http://localhost:8090";
 const Login = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.login);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const dispatch = useDispatch();
 
@@ -29,8 +30,14 @@ const Login = () => {
     justifyContent: "center",
   };
 
-  const onFinish = (values) => {
-    dispatch(registerLogin(values));
+  const onFinish = async (values) => {
+    const res = await dispatch(registerLogin(values));
+    if (!res?.payload) {
+      messageApi.open({
+        type: "error",
+        content: "登录注册失败",
+      });
+    }
   };
   useEffect(() => {
     if (userInfo && Object.keys(userInfo)?.length) {
@@ -40,7 +47,8 @@ const Login = () => {
 
   return (
     <div style={formStyle}>
-      <h2 style={{color:'#fff'}}>注册/登录</h2>
+      {contextHolder}
+      <h2 style={{ color: "#fff" }}>注册/登录</h2>
       <Form name="normal_login" style={{ maxWidth: 300 }} onFinish={onFinish}>
         <Form.Item
           name="userName"
