@@ -9,6 +9,7 @@ require("./sqlTable/index.js");
 const port = 8090;
 //创建实例
 const app = new Koa();
+console.log(`........当前是${app.env}模式........`);
 //注册使用cors中间件解决跨域
 app.use(
   cors({

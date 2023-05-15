@@ -1,9 +1,9 @@
 const { Sequelize,DataTypes } = require("sequelize");
-const { dbConfig } = require("../constant/index");
+const { dbConfig,sqlType } = require("../constant/index");
 
 const seq = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
   host: dbConfig.host /* 服务的主机名 */,
-  dialect: "postgres" /* 选择-->'mysql' | 'mariadb' | 'postgres' | 'mssql' */,
+  dialect: sqlType /* 选择-->'mysql' | 'mariadb' | 'postgres' | 'mssql' */,
   logging: false, // 显示所有日志函数调用参数
 });
 

@@ -36,7 +36,7 @@ const users = seq.define(
 );
 (async () => {
   await users.sync(); // 对象参数{force:true} => 如果表存在则删除
-  console.log("已存在users表");
+  console.log("已存在users数据表");
 })();
 // 导出模块
 module.exports = users;
